@@ -28,7 +28,15 @@ class Article < ActiveRecord::Base
   end
 
   def self.most_popular
-    all.sort_by{|a| a.comments.count }.last
+    # all.sort_by{|a| a.comments.count }.last
+    Rails.cache.fetch(:most_popular_article) do
+      select('articles.*, COUNT(comments.article_id) AS article_count')
+      .joins(:comments)
+      .group(:id)
+      .order('article_count DESC')
+      .limit(1)
+      .first
+    end
   end
 
   def self.random
@@ -57,7 +65,11 @@ class Article < ActiveRecord::Base
   end
 
   def self.total_word_count
-    all.inject(0) {|total, a| total += a.word_count }
+    # all.inject(0) {|total, a| total += a.word_count }
+    Rails.cache.fetch(:total_articles_word_count) do
+      # pluck(:body).inject(0) { |total, comment| } total += comment.split.count)
+      pluck(:body).join(" ").split.count
+    end
   end
 
   def self.generate_samples(quantity = 1000)

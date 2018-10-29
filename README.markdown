@@ -12,6 +12,14 @@ produce some performance issues for students to troubleshoot, including:
 
 ## Getting Started -- Checking Out the Branch and Loading Sample Data
 
+### For Optimization Dojo Class:
+`git clone -b blogger-perf-workshop https://github.com/JumpstartLab/blogger_advanced.git` (This needs to be exact)
+`cd blogger_advanced`
+Switch Ruby version to 2.3.x: `rbenv local 2.3.6`
+`bundle`
+`bundle exec rake sample_data:load`
+
+### Else
 Since generating a large amount of sample data via a DB seed task takes
 time, this branch includes a pre-built dataset in the form of a postgres
 DB dump. This is a data format similar to what you might use to backup a
